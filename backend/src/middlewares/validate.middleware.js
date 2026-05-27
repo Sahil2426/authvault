@@ -5,7 +5,9 @@ const validate = (zodSchema) => {
     if (!result.success) {
       return res.status(400).json({
         success: false,
-        errors: result.error.errors,
+        statusCode: 400,
+        message: "Validation failed",
+        errors: result.error.issues,
       });
     }
 

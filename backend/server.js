@@ -1,17 +1,16 @@
-import dotenv from "dotenv"
-dotenv.config()
+import dotenv from "dotenv";
+dotenv.config();
 
-import connectDB from "./src/config/db.js"
+import connectDB from "./src/config/db.js";
 
-import app from "./src/app.js"
+import app from "./src/app.js";
 
-async function startServer(){
+async function startServer() {
+  await connectDB();
 
-await connectDB();
-
-app.listen(process.env.PORT,()=>{
-    console.log(`server is running on port ${process.env.PORT}`)
-})
+  app.listen(process.env.PORT, () => {
+    console.log(`server is running on port ${process.env.PORT}`);
+  });
 }
 
-startServer()
+startServer();

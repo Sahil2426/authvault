@@ -1,10 +1,11 @@
 import UserModel from "../models/User.model.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import ApiError from "../utils/apiError.js";
 
 const registerUser = async (username, fullname, email, password) => {
   if (await UserModel.findOne({ $or: [{ email }, { username }] })) {
-    throw new Error("User already exists with email or username");
+    throw new ApiError(409, "User already exists with email or username");
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -25,6 +26,8 @@ const registerUser = async (username, fullname, email, password) => {
   const userObject = newUser.toObject();
 
   delete userObject.password;
+  delete userObject.emailVerificationToken;
+  delete userObject.emailVerificationExpiry;
 
   return userObject;
 };
