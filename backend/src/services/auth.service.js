@@ -35,4 +35,26 @@ const registerUser = async (username, fullname, email, password) => {
   return userObject;
 };
 
-export { registerUser };
+const verifyEmailService = async (token) => {
+  const user = await UserModel.findOne({ emailVerificationToken: token });
+
+  if (!user) {
+    throw new ApiError(400, "Invalid verification token");
+  }
+
+  if (Date.now() > user.emailVerificationExpiry) {
+    throw new ApiError(400, "Verification token has expired");
+  }
+
+  user.isVerified = true;
+  user.emailVerificationToken = null;
+  user.emailVerificationExpiry = null;
+
+  await user.save();
+
+  return {
+    message: "Email verification successful",
+  };
+};
+
+export { verifyEmailService, registerUser };
