@@ -2,6 +2,7 @@ import UserModel from "../models/User.model.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import ApiError from "../utils/apiError.js";
+import { sendVerificationEmail } from "./email.service.js";
 
 const registerUser = async (username, fullname, email, password) => {
   if (await UserModel.findOne({ $or: [{ email }, { username }] })) {
@@ -22,6 +23,8 @@ const registerUser = async (username, fullname, email, password) => {
     emailVerificationToken,
     emailVerificationExpiry,
   });
+
+  await sendVerificationEmail(newUser.email, newUser.emailVerificationToken);
 
   const userObject = newUser.toObject();
 

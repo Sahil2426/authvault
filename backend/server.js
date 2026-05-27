@@ -5,6 +5,8 @@ import connectDB from "./src/config/db.js";
 
 import app from "./src/app.js";
 
+import { transporter } from "./src/services/email.service.js";
+
 async function startServer() {
   await connectDB();
 
