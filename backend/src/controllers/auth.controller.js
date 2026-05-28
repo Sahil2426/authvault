@@ -2,6 +2,7 @@ import {
   registerUser,
   verifyEmailService,
   loginUser,
+  logoutUser,
 } from "../services/auth.service.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiResponse from "../utils/apiResponse.js";
@@ -28,4 +29,10 @@ const login = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, "Login successful", result));
 });
 
-export { register, verifyEmail, login };
+const logout = asyncHandler(async (req, res) => {
+  const refreshToken = req.body.refreshToken;
+  await logoutUser(refreshToken);
+  return res.status(200).json(new ApiResponse(200, "Logout successful"));
+});
+
+export { register, verifyEmail, login, logout };

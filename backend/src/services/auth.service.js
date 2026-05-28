@@ -104,4 +104,18 @@ const loginUser = async (email, password) => {
   };
 };
 
-export { verifyEmailService, registerUser, loginUser };
+const logoutUser = async (refreshToken) => {
+  const result = await TokenModel.findOneAndDelete({
+    token: refreshToken,
+  });
+
+  if (!result) {
+    throw new ApiError(401, "Invalid refresh token");
+  }
+
+  return {
+    message: "Logout user successful",
+  };
+};
+
+export { verifyEmailService, registerUser, loginUser, logoutUser };
