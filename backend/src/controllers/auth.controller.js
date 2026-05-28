@@ -39,11 +39,8 @@ const logout = asyncHandler(async (req, res) => {
 
 const forgotPassword = asyncHandler(async (req, res) => {
   const email = req.body.email;
-  await forgotPasswordService(email);
-
-  return res
-    .status(200)
-    .json(new ApiResponse(200, "Reset password link sent successfuly"));
+  const result = await forgotPasswordService(email);
+  return res.status(200).json(new ApiResponse(200, result.message));
 });
 
 const resetPassword = asyncHandler(async (req, res) => {

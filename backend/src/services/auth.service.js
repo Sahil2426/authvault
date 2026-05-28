@@ -123,12 +123,32 @@ const logoutUser = async (refreshToken) => {
 
 const forgotPasswordService = async (email) => {
   const user = await UserModel.findOne({ email });
+
   if (!user) {
     throw new ApiError(404, "User not found!");
   }
 
   if (!user.isVerified) {
-    throw new ApiError(403, "Please verify your email first");
+    if (Date.now() > new Date(user.emailVerificationExpiry).getTime()) {
+      const emailVerificationToken = crypto.randomBytes(32).toString("hex");
+
+      const emailVerificationExpiry = Date.now() + 24 * 60 * 60 * 1000;
+
+      user.emailVerificationToken = emailVerificationToken;
+      user.emailVerificationExpiry = emailVerificationExpiry;
+      await user.save();
+
+      await sendVerificationEmail(email, emailVerificationToken);
+      console.log("Returning early with verification email message");
+      return {
+        message:
+          "Email not verified. New verification link has been sent to your email",
+      };
+    }
+    throw new ApiError(
+      403,
+      "Please verify your email first. Check your inbox for verification link",
+    );
   }
 
   const resetPasswordToken = crypto.randomBytes(32).toString("hex");
