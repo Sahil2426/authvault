@@ -1,4 +1,8 @@
-import { registerUser, verifyEmailService } from "../services/auth.service.js";
+import {
+  registerUser,
+  verifyEmailService,
+  loginUser,
+} from "../services/auth.service.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiResponse from "../utils/apiResponse.js";
 
@@ -18,4 +22,10 @@ const verifyEmail = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "Email verified successfully"));
 });
 
-export { register, verifyEmail };
+const login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  const result = await loginUser(email, password);
+  return res.status(200).json(new ApiResponse(200, "Login successful", result));
+});
+
+export { register, verifyEmail, login };

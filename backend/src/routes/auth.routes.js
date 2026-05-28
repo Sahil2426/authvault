@@ -1,12 +1,18 @@
 import express from "express";
-import { register, verifyEmail } from "../controllers/auth.controller.js";
+import {
+  register,
+  verifyEmail,
+  login,
+} from "../controllers/auth.controller.js";
 import validate from "../middlewares/validate.middleware.js";
-import { registerSchema } from "../validations/auth.validation.js";
+import { registerSchema, loginSchema } from "../validations/auth.validation.js";
 
 const authRouter = express.Router();
 
+authRouter.post("/register", validate(registerSchema), register);
+
 authRouter.get("/verify-email/:token", verifyEmail);
 
-authRouter.post("/register", validate(registerSchema), register);
+authRouter.post("/login", validate(loginSchema), login);
 
 export default authRouter;
