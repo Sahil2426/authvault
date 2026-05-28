@@ -3,7 +3,10 @@ import TokenModel from "../models/Token.model.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import ApiError from "../utils/apiError.js";
-import { sendVerificationEmail } from "./email.service.js";
+import {
+  sendVerificationEmail,
+  sendResetPasswordEmail,
+} from "./email.service.js";
 import jwt from "jsonwebtoken";
 
 const registerUser = async (username, fullname, email, password) => {
@@ -118,4 +121,55 @@ const logoutUser = async (refreshToken) => {
   };
 };
 
-export { verifyEmailService, registerUser, loginUser, logoutUser };
+const forgotPasswordService = async (email) => {
+  const user = await UserModel.findOne({ email });
+  if (!user) {
+    throw new ApiError(404, "User not found!");
+  }
+
+  if (!user.isVerified) {
+    throw new ApiError(403, "Please verify your email first");
+  }
+
+  const resetPasswordToken = crypto.randomBytes(32).toString("hex");
+
+  user.resetPasswordToken = resetPasswordToken;
+  user.resetPasswordExpiry = Date.now() + 30 * 60 * 1000;
+  await user.save();
+
+  await sendResetPasswordEmail(email, resetPasswordToken);
+
+  return {
+    message: "Password reset link sent on your email successfuly",
+  };
+};
+
+const resetPasswordService = async (resetPasswordToken, newPassword) => {
+  const user = await UserModel.findOne({ resetPasswordToken });
+  if (!user) {
+    throw new ApiError(404, "Invalid reset password token");
+  }
+  if (Date.now() > user.resetPasswordExpiry) {
+    throw new ApiError(400, "Reset token has expired");
+  }
+
+  const newHashedPassword = await bcrypt.hash(newPassword, 10);
+
+  user.password = newHashedPassword;
+  user.resetPasswordExpiry = null;
+  user.resetPasswordToken = null;
+  await user.save();
+
+  return {
+    message: "Password reset successfully",
+  };
+};
+
+export {
+  verifyEmailService,
+  registerUser,
+  loginUser,
+  logoutUser,
+  forgotPasswordService,
+  resetPasswordService,
+};

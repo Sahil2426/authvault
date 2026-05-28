@@ -39,4 +39,23 @@ const sendVerificationEmail = async (email, verificationToken) => {
   console.log("Preview URL:", nodemailer.getTestMessageUrl(info));
 };
 
-export { transporter, sendVerificationEmail };
+const sendResetPasswordEmail = async (email, verificationToken) => {
+  if (!transporter) await createTransporter();
+
+  const verificationLink = `${process.env.CLIENT_URL}/api/v1/auth/reset-password/${verificationToken}`;
+
+  const info = await transporter.sendMail({
+    from: process.env.EMAIL_FROM,
+    to: email,
+    subject: "Reset password",
+    html: `<h1>Reset your password</h1>
+           <p>Click the link below to reset your password</p>
+           <a href="${verificationLink}">Reset password</a>
+           <p>This link expires in 30 minutes</p>`,
+  });
+
+  // This URL lets you preview the email in browser
+  console.log("Preview URL:", nodemailer.getTestMessageUrl(info));
+};
+
+export { transporter, sendVerificationEmail, sendResetPasswordEmail };

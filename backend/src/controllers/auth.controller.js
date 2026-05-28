@@ -3,6 +3,8 @@ import {
   verifyEmailService,
   loginUser,
   logoutUser,
+  forgotPasswordService,
+  resetPasswordService,
 } from "../services/auth.service.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiResponse from "../utils/apiResponse.js";
@@ -35,4 +37,22 @@ const logout = asyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, "Logout successful"));
 });
 
-export { register, verifyEmail, login, logout };
+const forgotPassword = asyncHandler(async (req, res) => {
+  const email = req.body.email;
+  await forgotPasswordService(email);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Reset password link sent successfuly"));
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+  const token = req.params.token;
+  const newPassword = req.body.password;
+  await resetPasswordService(token, newPassword);
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Password reset successfully"));
+});
+
+export { register, verifyEmail, login, logout, forgotPassword, resetPassword };
