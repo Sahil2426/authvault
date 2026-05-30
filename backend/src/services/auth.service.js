@@ -2,7 +2,7 @@ import UserModel from "../models/User.model.js";
 import TokenModel from "../models/Token.model.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import ApiError from "../utils/apiError.js";
+import ApiError from "../utils/ApiError.js";
 import {
   sendVerificationEmail,
   sendResetPasswordEmail,

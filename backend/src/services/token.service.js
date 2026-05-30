@@ -1,6 +1,6 @@
 import TokenModel from "../models/Token.model.js";
 import UserModel from "../models/User.model.js";
-import ApiError from "../utils/apiError.js";
+import ApiError from "../utils/ApiError.js";
 import jwt from "jsonwebtoken";
 
 const refreshTokenService = async (refreshToken) => {
@@ -19,7 +19,7 @@ const refreshTokenService = async (refreshToken) => {
   let decoded;
   try {
     decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-  } catch (err) {
+  } catch {
     throw new ApiError(401, "Invalid refresh token");
   }
 
