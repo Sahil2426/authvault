@@ -9,7 +9,7 @@ import {
 } from "./email.service.js";
 import jwt from "jsonwebtoken";
 
-const registerUser = async (username, fullname, email, password) => {
+const registerService = async (username, fullname, email, password) => {
   if (await UserModel.findOne({ $or: [{ email }, { username }] })) {
     throw new ApiError(409, "User already exists with email or username");
   }
@@ -62,7 +62,7 @@ const verifyEmailService = async (token) => {
   };
 };
 
-const loginUser = async (email, password) => {
+const loginService = async (email, password) => {
   const user = await UserModel.findOne({ email });
   if (!user) {
     throw new ApiError(404, "user not found!");
@@ -107,7 +107,7 @@ const loginUser = async (email, password) => {
   };
 };
 
-const logoutUser = async (refreshToken) => {
+const logoutService = async (refreshToken) => {
   const result = await TokenModel.findOneAndDelete({
     token: refreshToken,
   });
@@ -139,7 +139,7 @@ const forgotPasswordService = async (email) => {
       await user.save();
 
       await sendVerificationEmail(email, emailVerificationToken);
-      console.log("Returning early with verification email message");
+
       return {
         message:
           "Email not verified. New verification link has been sent to your email",
@@ -187,9 +187,9 @@ const resetPasswordService = async (resetPasswordToken, newPassword) => {
 
 export {
   verifyEmailService,
-  registerUser,
-  loginUser,
-  logoutUser,
+  registerService,
+  loginService,
+  logoutService,
   forgotPasswordService,
   resetPasswordService,
 };

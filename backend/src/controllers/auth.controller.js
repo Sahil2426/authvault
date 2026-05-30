@@ -1,8 +1,8 @@
 import {
-  registerUser,
+  registerService,
   verifyEmailService,
-  loginUser,
-  logoutUser,
+  loginService,
+  logoutService,
   forgotPasswordService,
   resetPasswordService,
 } from "../services/auth.service.js";
@@ -11,7 +11,7 @@ import ApiResponse from "../utils/apiResponse.js";
 
 const register = asyncHandler(async (req, res) => {
   const { username, fullname, email, password } = req.body;
-  const user = await registerUser(username, fullname, email, password);
+  const user = await registerService(username, fullname, email, password);
   res
     .status(201)
     .json(new ApiResponse(201, "User registered successfully", user));
@@ -27,13 +27,13 @@ const verifyEmail = asyncHandler(async (req, res) => {
 
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const result = await loginUser(email, password);
+  const result = await loginService(email, password);
   return res.status(200).json(new ApiResponse(200, "Login successful", result));
 });
 
 const logout = asyncHandler(async (req, res) => {
   const refreshToken = req.body.refreshToken;
-  await logoutUser(refreshToken);
+  await logoutService(refreshToken);
   return res.status(200).json(new ApiResponse(200, "Logout successful"));
 });
 
