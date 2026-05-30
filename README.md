@@ -210,7 +210,7 @@ Request → Route → Middleware → Controller → Service → Model → MongoD
 | Route              | Limit                      |
 | ------------------ | -------------------------- |
 | `/register`        | 5 requests per hour        |
-| `/login`           | 10 requests per 15 minutes |
+| `/login`           | 5 requests per 15 minutes |
 | `/forgot-password` | 3 requests per hour        |
 | `/reset-password`  | 5 requests per 15 minutes  |
 | `/verify-email`    | 10 requests per hour       |
