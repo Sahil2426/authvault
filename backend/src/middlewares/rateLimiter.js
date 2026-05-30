@@ -11,9 +11,10 @@ const registerLimiter = rateLimit({
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: 5,
   message: {
     success: false,
+    statusCode: 429,
     message: "Too many attempts, please try again after 15 minutes",
   },
 });
@@ -23,6 +24,7 @@ const forgotPasswordLimiter = rateLimit({
   max: 3,
   message: {
     success: false,
+    statusCode: 429,
     message: "Too many attempts, please try again after 1 hour",
   },
 });
@@ -32,6 +34,7 @@ const resetPasswordLimiter = rateLimit({
   max: 5,
   message: {
     success: false,
+    statusCode: 429,
     message: "Too many attempts, please try again after 15 minutes",
   },
 });
@@ -41,6 +44,7 @@ const verifyEmailLimiter = rateLimit({
   max: 10,
   message: {
     success: false,
+    statusCode: 429,
     message: "Too many attempts, please try again after 1 hour",
   },
 });
@@ -50,6 +54,7 @@ const refreshTokenLimiter = rateLimit({
   max: 30,
   message: {
     success: false,
+    statusCode: 429,
     message: "Too many attempts, please try again after 15 minutes",
   },
 });

@@ -80,19 +80,19 @@ const loginService = async (email, password) => {
   const accessToken = jwt.sign(
     { id: user.id, role: user.role },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: "15m" },
+    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY },
   );
 
   const refreshToken = jwt.sign(
     { id: user.id },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "7d" },
+    { expiresIn: process.env.REFRESH_TOKEN_EXPIRY },
   );
 
   await TokenModel.create({
     userId: user._id,
     token: refreshToken,
-    expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
   });
 
   const userObject = user.toObject();
