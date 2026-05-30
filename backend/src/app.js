@@ -5,6 +5,8 @@ import authRouter from "./routes/auth.routes.js";
 import errorMiddleware from "./middlewares/error.middleware.js";
 import userRouter from "./routes/user.routes.js";
 import tokenRouter from "./routes/token.routes.js";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./config/swagger.js";
 
 const app = express();
 
@@ -15,6 +17,8 @@ app.use(morgan("dev"));
 app.get("/", (req, res) => {
   res.send("API is running");
 });
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/api/v1/auth", authRouter);
 
