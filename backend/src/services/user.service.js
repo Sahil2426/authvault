@@ -1,7 +1,8 @@
+import bcrypt from "bcryptjs";
+
 import UserModel from "../models/User.model.js";
 import TokenModel from "../models/Token.model.js";
 import ApiError from "../utils/ApiError.js";
-import bcrypt from "bcryptjs";
 
 const getProfileService = async (userId) => {
   const user = await UserModel.findById(userId);

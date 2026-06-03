@@ -15,9 +15,6 @@ const createTransporter = async () => {
       pass: testAccount.pass,
     },
   });
-
-  console.log("Test email account:", testAccount.user);
-  console.log("Test email password:", testAccount.pass);
 };
 
 const sendVerificationEmail = async (email, verificationToken) => {

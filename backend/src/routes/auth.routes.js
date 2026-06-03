@@ -1,4 +1,5 @@
 import express from "express";
+
 import {
   register,
   verifyEmail,
@@ -7,7 +8,6 @@ import {
   forgotPassword,
   resetPassword,
 } from "../controllers/auth.controller.js";
-import validate from "../middlewares/validate.middleware.js";
 import {
   registerSchema,
   loginSchema,
@@ -21,6 +21,7 @@ import {
   forgotPasswordLimiter,
   resetPasswordLimiter,
 } from "../middlewares/rateLimiter.js";
+import validate from "../middlewares/validate.middleware.js";
 
 const authRouter = express.Router();
 

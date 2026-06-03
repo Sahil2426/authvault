@@ -1,13 +1,16 @@
-import UserModel from "../models/User.model.js";
-import TokenModel from "../models/Token.model.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import ApiError from "../utils/ApiError.js";
+import jwt from "jsonwebtoken";
+
+import UserModel from "../models/User.model.js";
+import TokenModel from "../models/Token.model.js";
+
 import {
   sendVerificationEmail,
   sendResetPasswordEmail,
 } from "./email.service.js";
-import jwt from "jsonwebtoken";
+
+import ApiError from "../utils/ApiError.js";
 
 const registerService = async (username, fullname, email, password) => {
   if (await UserModel.findOne({ $or: [{ email }, { username }] })) {

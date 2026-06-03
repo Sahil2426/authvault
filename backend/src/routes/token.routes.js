@@ -1,5 +1,6 @@
 import express from "express";
-import { refreshToken } from "../controllers/token.controller.js";
+
+import { refreshAccessToken } from "../controllers/token.controller.js";
 import { refreshTokenLimiter } from "../middlewares/rateLimiter.js";
 
 const tokenRouter = express.Router();
@@ -28,6 +29,6 @@ const tokenRouter = express.Router();
  *       401:
  *         description: Invalid or expired refresh token
  */
-tokenRouter.post("/refresh", refreshTokenLimiter, refreshToken);
+tokenRouter.post("/refresh", refreshTokenLimiter, refreshAccessToken);
 
 export default tokenRouter;

@@ -5,6 +5,7 @@ const registerLimiter = rateLimit({
   max: 5,
   message: {
     success: false,
+    statusCode: 429,
     message: "Too many attempts, please try again after 1 hour",
   },
 });

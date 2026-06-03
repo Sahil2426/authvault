@@ -1,9 +1,10 @@
+import jwt from "jsonwebtoken";
+
 import TokenModel from "../models/Token.model.js";
 import UserModel from "../models/User.model.js";
 import ApiError from "../utils/ApiError.js";
-import jwt from "jsonwebtoken";
 
-const refreshTokenService = async (refreshToken) => {
+const accessTokenService = async (refreshToken) => {
   const token = await TokenModel.findOne({ token: refreshToken });
 
   if (!token) {
@@ -39,4 +40,4 @@ const refreshTokenService = async (refreshToken) => {
   return { accessToken };
 };
 
-export { refreshTokenService };
+export { accessTokenService };

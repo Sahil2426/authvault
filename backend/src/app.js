@@ -1,12 +1,14 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import authRouter from "./routes/auth.routes.js";
-import errorMiddleware from "./middlewares/error.middleware.js";
-import userRouter from "./routes/user.routes.js";
-import tokenRouter from "./routes/token.routes.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
+
+import authRouter from "./routes/auth.routes.js";
+import userRouter from "./routes/user.routes.js";
+import tokenRouter from "./routes/token.routes.js";
+
+import errorMiddleware from "./middlewares/error.middleware.js";
 
 const app = express();
 
