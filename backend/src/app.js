@@ -3,6 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
+import helmet from "helmet";
 
 import authRouter from "./routes/auth.routes.js";
 import userRouter from "./routes/user.routes.js";
@@ -15,6 +16,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
+app.use(helmet());
 
 app.get("/", (req, res) => {
   res.send("API is running");
